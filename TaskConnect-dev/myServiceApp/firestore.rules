@@ -1,0 +1,103 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Check if user is the client of a job
+    function isJobClient(jobData) {
+      return isSignedIn() && jobData.clientId == request.auth.uid;
+    }
+
+    // Check if user is the tasker of a job
+    function isJobTasker(jobData) {
+      return isSignedIn() && jobData.taskerId == request.auth.uid;
+    }
+
+    // Check if rating data is valid
+    function isValidRating() {
+      let rating = request.resource.data.rating;
+      return rating == null || (
+        rating.stars is number && 
+        rating.stars >= 1 && 
+        rating.stars <= 5 && 
+        rating.comment is string && 
+        rating.clientId == request.auth.uid &&
+        rating.createdAt is string
+      );
+    }
+
+    // Check if job can be deleted
+    function canDeleteJob(jobData) {
+      return isJobClient(jobData) && 
+             !(['in_escrow', 'processing_payment', 'paid', 'completed'].hasAny([jobData.status]));
+    }
+
+    match /jobs/{jobId} {
+      allow read: if isSignedIn() && (
+        isJobClient(resource.data) || 
+        isJobTasker(resource.data)
+      );
+      
+      // Allow creating jobs
+      allow create: if isSignedIn() && 
+        request.resource.data.clientId == request.auth.uid;
+      
+      // Allow updates with specific conditions
+      allow update: if isSignedIn() && (
+        // Client can update only specific fields
+        (isJobClient(resource.data) && (
+          // Only allow rating update if job is paid and not yet rated
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rating', 'status']) &&
+           resource.data.status == 'paid' &&
+           resource.data.rating == null &&
+           isValidRating()
+          )
+        )) ||
+        // Tasker can update only specific fields
+        (isJobTasker(resource.data) && (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        ))
+      );
+
+      // Allow deletion with specific conditions
+      allow delete: if canDeleteJob(resource.data);
+    }
+
+    match /taskers/{taskerId} {
+      allow read: if true;
+      
+      // Allow tasker to update their own profile
+      allow update: if isSignedIn() && (
+        isOwner(taskerId) || 
+        // Allow rating updates through transactions
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['ratings', 'averageRating', 'totalRatings']) &&
+         exists(/databases/$(database)/documents/jobs/$(request.resource.data.ratings[-1].jobId)) &&
+         get(/databases/$(database)/documents/jobs/$(request.resource.data.ratings[-1].jobId)).data.clientId == request.auth.uid
+        )
+      );
+      
+      allow create: if isSignedIn() && isOwner(taskerId);
+    }
+
+    // This rule allows anyone with your Firestore database reference to view, edit,
+    // and delete all data in your Firestore database. It is useful for getting
+    // started, but it is configured to expire after 30 days because it
+    // leaves your app open to attackers. At that time, all client
+    // requests to your Firestore database will be denied.
+    //
+    // Make sure to write security rules for your app before that time, or else
+    // all client requests to your Firestore database will be denied until you Update
+    // your rules
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2025, 5, 9);
+    }
+  }
+}

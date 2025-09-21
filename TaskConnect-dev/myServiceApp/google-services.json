@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "249705110811",
+    "project_id": "taskconnect-30e07",
+    "storage_bucket": "taskconnect-30e07.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249705110811:android:fe798739e29fa5231b87be",
+        "android_client_info": {
+          "package_name": "com.taskconnect.myServiceApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249705110811-76iom4fcjg2b5snf6ao3pok4e7j72o5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taskconnect.myServiceApp",
+            "certificate_hash": "9ac651aca38881e6adbf695715b25c983eb283d1"
+          }
+        },
+        {
+          "client_id": "249705110811-b5h6c9rb8i79uqug3tt5ficghcfk9o0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCum4Th4womr3XJ8RoRTwROT7YDSgX-rAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249705110811-b5h6c9rb8i79uqug3tt5ficghcfk9o0d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

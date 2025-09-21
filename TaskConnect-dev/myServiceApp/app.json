@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "myServiceApp",
+    "slug": "myServiceApp",
+    "owner": "oringe",
+    "version": "1.0.0",
+    "scheme": "myserviceapp",
+    "newArchEnabled": true,
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Task Connect to use your location to suggest addresses."
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
+    ],
+    "android": {
+      "package": "com.taskconnect.myserviceapp",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "myserviceapp"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "ios": {
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app uses Face ID to securely log you in."
+      },
+      "bundleIdentifier": "com.taskconnect.myserviceapp"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "your-eas-project-id"
+      }
+    }
+  }
+}

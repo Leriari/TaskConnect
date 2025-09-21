@@ -1,0 +1,12 @@
+# Firebase
+firebase-debug.log
+firebase-debug.*.log
+*.firebase
+*.targ
+
+# Dependencies
+node_modules/
+
+# Local configuration
+runtimeconfig.json
+.runtimeconfig.json

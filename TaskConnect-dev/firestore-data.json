@@ -1,0 +1,57 @@
+{
+    "users": {
+      "user_001": {
+        "fullName": "John Doe",
+        "email": "john@example.com",
+        "phone": "+254700000000",
+        "createdAt": "2025-04-13T10:00:00Z"
+      }
+    },
+    "taskers": {
+      "tasker_001": {
+        "userId": "user_001",
+        "profilePhotoUrl": "https://example.com/photo.jpg",
+        "bio": "Experienced cleaner in Nairobi.",
+        "idNumber": "12345678",
+        "kraPin": "A123456789B",
+        "idCardFrontUrl": "https://example.com/id-front.jpg",
+        "idCardBackUrl": "https://example.com/id-back.jpg",
+        "services": ["service_cleaning", "service_moving"],
+        "locations": ["location_nairobi", "location_thika"],
+        "paymentMethods": ["mpesa", "cash"],
+        "createdAt": "2025-04-13T10:05:00Z"
+      }
+    },
+    "services": {
+      "service_cleaning": {
+        "name": "Cleaning",
+        "rate": 1500
+      },
+      "service_moving": {
+        "name": "Moving",
+        "rate": 3000
+      }
+    },
+    "locations": {
+      "location_nairobi": {
+        "city": "Nairobi",
+        "county": "Nairobi County"
+      },
+      "location_thika": {
+        "city": "Thika",
+        "county": "Kiambu County"
+      }
+    },
+    "paymentMethods": {
+      "mpesa": {
+        "name": "M-Pesa"
+      },
+      "cash": {
+        "name": "Cash"
+      },
+      "card": {
+        "name": "Card"
+      }
+    }
+  }
+  
